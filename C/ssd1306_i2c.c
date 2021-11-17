@@ -423,6 +423,20 @@ char* GetIpAddress(void)
     int fd;
     struct ifreq ifr;
     int symbol=0;
+
+    char hostname[20] = {0};
+    size_t hostname_len;
+
+    /* Get the hostname */
+    hostname_len = 20;
+    symbol = gethostname(hostname, hostname_len);
+    if (symbol == 0)
+    {
+      char* buffer = hostname;
+      return buffer;
+    }
+
+    /* only do the IP address if hostname failed */
     fd = socket(AF_INET, SOCK_DGRAM, 0);
     
     /* I want to get an IPv4 IP address */
